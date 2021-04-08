@@ -83,7 +83,7 @@ class NetConv(Model):
 
 class ModelFabric:
 
-    def CreateModel(self, name):
+    def create_model(self, name):
         if name == 'lstm':
             return NetLSTM()
 

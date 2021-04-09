@@ -34,8 +34,23 @@ class NetLSTM(Model):
 class NetConv(Model):
 
     def make_architecture(self, params):
-        len, n_classes, k_emb, k_drop, k_filters = params
+        len, n_classes, k_emb, k_drop, k_kernel, k_filters, k_pool, k_dense = params
+
         self.model = Sequential()
+
+        self.model.add(Embedding(len, 100 * k_emb))
+        self.model.add(SpatialDropout1D(0.1 * k_drop))
+        self.model.add(BatchNormalization())
+        self.model.add(Conv1D(2**k_kernel, 1*k_filters, activation='relu', padding='same'))
+        self.model.add(Conv1D(2**k_kernel, 1*k_filters, activation='relu', padding='same'))
+        self.model.add(MaxPooling1D(1*k_pool))
+        self.model.add(Dropout(0.1 * k_drop))
+        self.model.add(BatchNormalization())
+        self.model.add(GlobalAvgPool1D())
+        self.model.add(Dense(2**k_dense, activation='relu'))
+        self.model.add(Dropout(0.1 * k_drop))
+        self.model.add(BatchNormalization())
+        self.model.add(Dense(n_classes, activation='softmax'))
 
         return self.model
 

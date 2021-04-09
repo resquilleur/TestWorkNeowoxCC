@@ -38,12 +38,10 @@ class NetLSTM(Model):
         self.model.add(BatchNormalization())
         self.model.add(LSTM(2 ** k_filters, dropout=0.1 * k_drop, recurrent_dropout=0.1 * k_drop))
         self.model.add(Dense(n_classes, activation='softmax'))
-        return self.model
 
     def compile(self, lr):
         self.model.compile(optimizer=Adam(learning_rate=lr, decay=1e-6), loss='categorical_crossentropy',
                            metrics=['accuracy'])
-        return self.model
 
     def fit(self, x_train, y_train, x_test, y_test, callbacks, batch_size=16, epochs=30):
         history = self.model.fit(

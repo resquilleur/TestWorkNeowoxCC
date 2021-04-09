@@ -10,6 +10,7 @@ from tensorflow.keras.layers import Bidirectional, SpatialDropout1D, GlobalAvgPo
 
 class Model(metaclass=abc.ABCMeta):
 
+    @staticmethod
     @abstractmethod
     def make_architecture(self):
         pass
@@ -17,7 +18,9 @@ class Model(metaclass=abc.ABCMeta):
 
 class NetLSTM(Model):
 
-    def make_architecture(self, len, n_classes, k_emb=1, k_drop=7, k_filters=6):
+    def make_architecture(self, params):
+        len, n_classes, k_emb, k_drop, k_filters = params
+
         self.model = Sequential()
 
         self.model.add(Embedding(len, 100 * k_emb))
@@ -30,7 +33,8 @@ class NetLSTM(Model):
 
 class NetConv(Model):
 
-    def make_architecture(self):
+    def make_architecture(self, params):
+        len, n_classes, k_emb, k_drop, k_filters = params
         self.model = Sequential()
 
         return self.model
@@ -38,7 +42,8 @@ class NetConv(Model):
 
 class ModelFabric:
 
-    def create_model(self, name):
+    @staticmethod
+    def create_model(name):
         if name == 'lstm':
             return NetLSTM()
 

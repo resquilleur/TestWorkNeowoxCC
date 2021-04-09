@@ -17,9 +17,6 @@ class Model(metaclass=abc.ABCMeta):
 
 class NetLSTM(Model):
 
-    def __init__(self):
-        self.model = None
-
     def make_architecture(self, len, n_classes, k_emb=1, k_drop=7, k_filters=6):
         self.model = Sequential()
 
@@ -32,9 +29,6 @@ class NetLSTM(Model):
 
 
 class NetConv(Model):
-
-    def __init__(self):
-        self.model = None
 
     def make_architecture(self):
         self.model = Sequential()

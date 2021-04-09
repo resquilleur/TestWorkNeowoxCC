@@ -14,18 +14,6 @@ class Model(metaclass=abc.ABCMeta):
     def make_architecture(self):
         pass
 
-    @abstractmethod
-    def compile(self):
-        pass
-
-    @abstractmethod
-    def fit(self):
-        pass
-
-    @abstractmethod
-    def predict(self):
-        pass
-
 
 class NetLSTM(Model):
 
@@ -39,44 +27,14 @@ class NetLSTM(Model):
         self.model.add(LSTM(2 ** k_filters, dropout=0.1 * k_drop, recurrent_dropout=0.1 * k_drop))
         self.model.add(Dense(n_classes, activation='softmax'))
 
-    def compile(self, lr):
-        self.model.compile(optimizer=Adam(learning_rate=lr, decay=1e-6), loss='categorical_crossentropy',
-                           metrics=['accuracy'])
-
-    def fit(self, x_train, y_train, x_test, y_test, callbacks, batch_size=16, epochs=30):
-        history = self.model.fit(
-            x_train,
-            y_train,
-            batch_size=batch_size,
-            epochs=epochs,
-            validation_data=(x_test, y_test),
-            callbacks=callbacks)
-        return history
-
-    def predict(self, x_test):
-        pred = self.model.predict(x_test)
-        return pred
-
 
 class NetConv(Model):
 
     def __init__(self):
         self.model = Sequential()
-        self.history = []
-        self.pred = []
-        self.result = []
 
     def make_architecture(self):
         return self.model
-
-    def compile(self):
-        return self.model
-
-    def fit(self):
-        return self.history
-
-    def predict(self):
-        return self.pred
 
 
 class ModelFabric:

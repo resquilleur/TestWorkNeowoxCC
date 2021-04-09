@@ -26,6 +26,7 @@ class NetLSTM(Model):
         self.model.add(BatchNormalization())
         self.model.add(LSTM(2 ** k_filters, dropout=0.1 * k_drop, recurrent_dropout=0.1 * k_drop))
         self.model.add(Dense(n_classes, activation='softmax'))
+        return self.model
 
 
 class NetConv(Model):
